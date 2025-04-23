@@ -1,7 +1,10 @@
 <template>
-  <div 
-    class="title-block relative group"
-    :style="componentStyle"
+  <BaseBlock
+    :component-style="componentStyle"
+    :is-selected="isSelected"
+    @edit="$emit('edit')"
+    @delete="$emit('delete')"
+    @select="$emit('select')"
   >
     <h1 
       :class="[
@@ -14,22 +17,13 @@
     >
       {{ content.text }}
     </h1>
-    
-    <!-- 编辑按钮 -->
-    <div class="absolute right-2 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity">
-      <button 
-        @click="$emit('edit')"
-        class="p-1.5 bg-indigo-50 text-indigo-600 rounded-lg hover:bg-indigo-100 transition-colors"
-      >
-        <Icon icon="carbon:edit" />
-      </button>
-    </div>
-  </div>
+  </BaseBlock>
 </template>
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import { Icon } from '@iconify/vue';
+import BaseBlock from '../base/BaseBlock.vue';
+import type { ComponentStyle } from '../types';
 
 interface TitleContent {
   text: string;
@@ -40,11 +34,13 @@ interface TitleContent {
 
 interface Props {
   content: TitleContent;
-  componentStyle?: Record<string, string>;
+  componentStyle: ComponentStyle;
+  isSelected?: boolean;
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  componentStyle: () => ({})
+  componentStyle: () => ({}),
+  isSelected: false
 });
 
 // 标题样式映射
@@ -62,14 +58,12 @@ const textLevel = computed(() => {
 
 defineEmits<{
   (e: 'edit'): void;
+  (e: 'delete'): void;
+  (e: 'select'): void;
 }>();
 </script>
 
 <style scoped>
-.title-block {
-  margin: 0.5rem 0;
-}
-
 .title-content {
   margin: 0;
   line-height: 1.4;

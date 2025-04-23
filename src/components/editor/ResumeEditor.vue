@@ -14,9 +14,9 @@
           @dragstart="handleDragStart($event, component)"
         >
           <div class="flex items-center gap-2">
-            <div class="w-7 h-7 bg-indigo-50 rounded-full flex items-center justify-center">
+            <!-- <div class="w-7 h-7 bg-indigo-50 rounded-full flex items-center justify-center">
               <Icon :icon="component.icon" class="text-indigo-600" />
-            </div>
+            </div> -->
             <span class="font-medium text-gray-700 text-sm">{{ component.label }}</span>
           </div>
         </div>
@@ -32,7 +32,6 @@
       <div class="resume-container mx-auto bg-white rounded-xl shadow-md p-6" :style="resumeStyle">
         <draggable
           v-model="resumeComponents"
-          class="space-y-4"
           item-key="id"
           @start="drag = true"
           @end="drag = false"
@@ -135,17 +134,6 @@
                   </select>
                 </div>
               </div>
-            </div>
-            
-            <!-- 文本组件属性 -->
-            <div v-else-if="selectedComponent.type === 'text'" class="bg-white rounded-lg shadow-sm p-3 border border-gray-200">
-              <h3 class="text-sm font-medium text-gray-700 mb-2">内容编辑</h3>
-              <textarea
-                v-model="selectedComponent.content"
-                class="form-input"
-                rows="4"
-                placeholder="请输入文本内容"
-              ></textarea>
             </div>
             
             <!-- 图片组件属性 -->
@@ -358,7 +346,6 @@ import type { BaseComponent, ComponentType } from '../../types/resume';
 import { v4 as uuidv4 } from 'uuid';
 import draggable from 'vuedraggable';
 import { Icon } from '@iconify/vue';
-import TextBlock from '../resume/blocks/TextBlock.vue';
 import ListBlock from '../resume/blocks/ListBlock.vue';
 import ImageBlock from '../resume/blocks/ImageBlock.vue';
 import TitleBlock from '../resume/blocks/TitleBlock.vue';
@@ -366,6 +353,9 @@ import DividerBlock from '../resume/blocks/DividerBlock.vue';
 import SkillTagBlock from '../resume/blocks/SkillTagBlock.vue';
 import TimelineBlock from '../resume/blocks/TimelineBlock.vue';
 import ContactBlock from '../resume/blocks/ContactBlock.vue';
+import ExperienceBlock from '../resume/blocks/ExperienceBlock.vue';
+import EducationBlock from '../resume/blocks/EducationBlock.vue';
+import SectionBlock from '../resume/blocks/SectionBlock.vue';
 
 const store = useResumeStore();
 const drag = ref(false);
@@ -374,13 +364,15 @@ const selectedComponent = ref<BaseComponent | null>(null);
 // 可用组件列表
 const availableComponents = [
   { type: 'title' as ComponentType, label: '标题', icon: 'carbon:text' },
-  { type: 'text' as ComponentType, label: '文本块', icon: 'material-symbols:format-color-text' },
   { type: 'image' as ComponentType, label: '图片', icon: 'carbon:image' },
   { type: 'list' as ComponentType, label: '列表', icon: 'carbon:list' },
   { type: 'divider' as ComponentType, label: '分割线', icon: 'carbon:line' },
   { type: 'skill-tag' as ComponentType, label: '技能标签', icon: 'carbon:tag' },
   { type: 'timeline' as ComponentType, label: '时间线', icon: 'carbon:time' },
   { type: 'contact' as ComponentType, label: '联系方式', icon: 'carbon:phone' },
+  { type: 'section' as ComponentType, label: '区块', icon: 'carbon:section' },
+  { type: 'experience' as ComponentType, label: '工作经历', icon: 'carbon:briefcase' },
+  { type: 'education' as ComponentType, label: '教育背景', icon: 'carbon:education' },
 ];
 
 // 计算属性
@@ -397,13 +389,15 @@ const resumeStyle = computed(() => store.resume.style);
 const getComponentByType = (type: ComponentType) => {
   const componentMap = {
     title: TitleBlock,
-    text: TextBlock,
     image: ImageBlock,
     list: ListBlock,
     divider: DividerBlock,
     'skill-tag': SkillTagBlock,
     timeline: TimelineBlock,
     contact: ContactBlock,
+    section: SectionBlock,
+    experience: ExperienceBlock,
+    education: EducationBlock,
   };
   return componentMap[type];
 };
@@ -411,13 +405,15 @@ const getComponentByType = (type: ComponentType) => {
 const getComponentIcon = (type: ComponentType) => {
   const iconMap = {
     title: 'carbon:text',
-    text: 'carbon:text',
     image: 'carbon:image',
     list: 'carbon:list',
     divider: 'carbon:line',
     'skill-tag': 'carbon:tag',
     timeline: 'carbon:time',
     contact: 'carbon:phone',
+    section: 'carbon:section',
+    experience: 'carbon:briefcase',
+    education: 'carbon:education',
   };
   return iconMap[type] || 'carbon:component';
 };
@@ -425,13 +421,15 @@ const getComponentIcon = (type: ComponentType) => {
 const getComponentLabel = (type: ComponentType) => {
   const labelMap = {
     title: '标题',
-    text: '文本块',
     image: '图片',
     list: '列表',
     divider: '分割线',
     'skill-tag': '技能标签',
     timeline: '时间线',
     contact: '联系方式',
+    section: '区块',
+    experience: '工作经历',
+    education: '教育背景',
   };
   return labelMap[type] || '未知组件';
 };
@@ -462,18 +460,7 @@ const handleDrop = (event: DragEvent) => {
           },
           style: {
             width: '100%',
-            padding: '10px',
-          }
-        };
-        break;
-      case 'text':
-        newComponent = {
-          id: uuidv4(),
-          type: 'text',
-          content: '请输入文本内容',
-          style: {
-            width: '100%',
-            padding: '10px',
+            padding: '0px'
           }
         };
         break;
@@ -573,6 +560,56 @@ const handleDrop = (event: DragEvent) => {
             iconColor: '#6366f1',
             labelColor: '#6b7280',
             valueColor: '#1f2937'
+          },
+          style: {
+            width: '100%',
+            padding: '10px',
+          }
+        };
+        break;
+      case 'section':
+        newComponent = {
+          id: uuidv4(),
+          type: 'section',
+          content: {
+            title: '新区块',
+            description: '这是新创建的区块'
+          },
+          style: {
+            width: '100%',
+            padding: '10px',
+          }
+        };
+        break;
+      case 'experience':
+        newComponent = {
+          id: uuidv4(),
+          type: 'experience',
+          content: {
+            title: '新工作经历',
+            company: '新公司',
+            location: '新地点',
+            startDate: '2020-01-01',
+            endDate: '2023-06-30',
+            description: '新描述'
+          },
+          style: {
+            width: '100%',
+            padding: '10px',
+          }
+        };
+        break;
+      case 'education':
+        newComponent = {
+          id: uuidv4(),
+          type: 'education',
+          content: {
+            school: '新学校',
+            degree: '新学位',
+            field: '新领域',
+            startDate: '2018-09-01',
+            endDate: '2022-06-30',
+            description: '新描述'
           },
           style: {
             width: '100%',

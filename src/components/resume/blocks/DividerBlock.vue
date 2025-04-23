@@ -1,7 +1,10 @@
 <template>
-  <div 
-    class="divider-block relative group"
-    :style="componentStyle"
+  <BaseBlock
+    :component-style="componentStyle"
+    :is-selected="isSelected"
+    @edit="$emit('edit')"
+    @delete="$emit('delete')"
+    @select="$emit('select')"
   >
     <div 
       class="divider-line"
@@ -15,28 +18,20 @@
         borderWidth: `${width}px`
       }"
     ></div>
-    
-    <!-- 编辑按钮 -->
-    <div class="absolute right-2 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity">
-      <button 
-        @click="$emit('edit')"
-        class="p-1.5 bg-indigo-50 text-indigo-600 rounded-lg hover:bg-indigo-100 transition-colors"
-      >
-        <Icon icon="carbon:edit" />
-      </button>
-    </div>
-  </div>
+  </BaseBlock>
 </template>
 
 <script setup lang="ts">
-import { Icon } from '@iconify/vue';
+import BaseBlock from '../base/BaseBlock.vue';
+import type { ComponentStyle } from '../types';
 
 interface Props {
   type?: 'horizontal' | 'vertical';
   style?: 'solid' | 'dashed' | 'dotted';
   color?: string;
   width?: number;
-  componentStyle?: Record<string, string>;
+  componentStyle: ComponentStyle;
+  isSelected?: boolean;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -44,19 +39,18 @@ const props = withDefaults(defineProps<Props>(), {
   style: 'solid',
   color: '#e5e7eb',
   width: 1,
-  componentStyle: () => ({})
+  componentStyle: () => ({}),
+  isSelected: false
 });
 
 defineEmits<{
   (e: 'edit'): void;
+  (e: 'delete'): void;
+  (e: 'select'): void;
 }>();
 </script>
 
 <style scoped>
-.divider-block {
-  padding: 0.5rem 0;
-}
-
 .divider-line {
   margin: 0;
 }

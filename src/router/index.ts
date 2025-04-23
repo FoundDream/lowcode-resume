@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import Home from '../views/Home.vue';
 import Editor from '../views/Editor.vue';
+import TemplateView from '../views/TemplateView.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -14,6 +15,11 @@ const router = createRouter({
       path: '/editor',
       name: 'editor',
       component: Editor
+    },
+    {
+      path: '/templates',
+      name: 'template',
+      component: TemplateView
     }
   ]
 });

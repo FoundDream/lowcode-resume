@@ -1,7 +1,10 @@
 <template>
-  <div 
-    class="contact-block relative group"
-    :style="componentStyle"
+  <BaseBlock
+    :component-style="componentStyle"
+    :is-selected="isSelected"
+    @edit="$emit('edit')"
+    @delete="$emit('delete')"
+    @select="$emit('select')"
   >
     <div class="contact-items grid grid-cols-2 gap-4">
       <div
@@ -38,21 +41,13 @@
         </div>
       </div>
     </div>
-    
-    <!-- 编辑按钮 -->
-    <div class="absolute right-2 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity">
-      <button 
-        @click="$emit('edit')"
-        class="p-1.5 bg-indigo-50 text-indigo-600 rounded-lg hover:bg-indigo-100 transition-colors"
-      >
-        <Icon icon="carbon:edit" />
-      </button>
-    </div>
-  </div>
+  </BaseBlock>
 </template>
 
 <script setup lang="ts">
 import { Icon } from '@iconify/vue';
+import BaseBlock from '../base/BaseBlock.vue';
+import type { ComponentStyle } from '../types';
 
 interface ContactItem {
   icon: string;
@@ -70,23 +65,23 @@ interface ContactContent {
 
 interface Props {
   content: ContactContent;
-  componentStyle?: Record<string, string>;
+  componentStyle: ComponentStyle;
+  isSelected?: boolean;
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  componentStyle: () => ({})
+  componentStyle: () => ({}),
+  isSelected: false
 });
 
 defineEmits<{
   (e: 'edit'): void;
+  (e: 'delete'): void;
+  (e: 'select'): void;
 }>();
 </script>
 
 <style scoped>
-.contact-block {
-  padding: 1rem 0;
-}
-
 .contact-item {
   transition: all 0.2s ease;
 }

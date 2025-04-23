@@ -52,17 +52,32 @@ import { Transition } from 'vue';
 import { Icon } from '@iconify/vue';
 import ResumeEditor from '../components/editor/ResumeEditor.vue';
 import { useResumeStore } from '../stores/resume';
+import { useTemplateStore } from '../stores/template';
+import { onMounted } from 'vue';
+import type { BaseComponent } from '../types/resume';
 
-const store = useResumeStore();
+const resumeStore = useResumeStore();
+const templateStore = useTemplateStore();
+
+// 初始化时应用模板
+onMounted(() => {
+  if (templateStore.selectedTemplate) {
+    // 如果有选择的模板，应用模板内容
+    templateStore.selectedTemplate.components.forEach((component: BaseComponent) => {
+      resumeStore.addComponent(component);
+    });
+    resumeStore.updateResumeStyle(templateStore.selectedTemplate.theme);
+  }
+});
 
 const handleSave = () => {
   // TODO: 实现保存功能
-  console.log('保存简历', store.resume);
+  console.log('保存简历', resumeStore.resume);
 };
 
 const handlePreview = () => {
   // TODO: 实现预览功能
-  console.log('预览简历', store.resume);
+  console.log('预览简历', resumeStore.resume);
 };
 </script>
 
@@ -76,4 +91,6 @@ const handlePreview = () => {
 .fade-leave-to {
   opacity: 0;
 }
+
+
 </style> 

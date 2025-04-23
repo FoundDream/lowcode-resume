@@ -63,12 +63,12 @@
                   >
                     免费创建简历
                   </router-link>
-                  <a
-                    href="#templates"
+                  <router-link
+                    to="/templates"
                     class="inline-flex items-center px-6 py-3 border border-gray-300 shadow-sm text-base font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
                   >
                     浏览模板
-                  </a>
+                  </router-link>
                 </div>
               </div>
             </div>

@@ -6,8 +6,8 @@
     @click="$emit('select')"
   >
     <!-- 内容插槽 -->
-    <div class="block-content p-4">
-      <slot></slot>
+    <div class="block-content">
+      <slot />
     </div>
 
     <!-- 操作按钮 -->
@@ -46,18 +46,18 @@ defineEmits<{
 
 <style scoped>
 .base-block {
-  min-height: 100px;
   background-color: white;
   border-radius: 0.5rem;
   transition: all 0.2s ease;
   cursor: pointer;
 }
 
+.base-block:hover {
+  border: 1px solid #000
+}
+
 .base-block.is-selected {
   box-shadow: 0 0 0 2px var(--primary-color);
 }
 
-.block-content {
-  min-height: 100px;
-}
 </style> 
