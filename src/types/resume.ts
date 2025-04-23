@@ -1,12 +1,16 @@
 // 组件类型
-export type ComponentType = 'text' | 'image' | 'list';
+export type ComponentType = 'text' | 'image' | 'list' | 'title' | 'divider' | 'skill-tag' | 'timeline' | 'contact';
 
 // 基础组件属性
 export interface BaseComponent {
   id: string;
   type: ComponentType;
   content: any;
-  style: ComponentStyle;
+  style: {
+    width: string;
+    padding: string;
+    [key: string]: string;
+  };
 }
 
 // 组件样式
@@ -33,4 +37,15 @@ export interface ResumeStyle {
   padding: string;
   backgroundColor: string;
   [key: string]: string;
+}
+
+export interface Resume {
+  id: string;
+  title: string;
+  components: BaseComponent[];
+  style: {
+    width: string;
+    padding: string;
+    [key: string]: string;
+  };
 } 

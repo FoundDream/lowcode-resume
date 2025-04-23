@@ -7,7 +7,7 @@
             <div class="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center">
               <Icon icon="carbon:document" class="text-white text-lg" />
             </div>
-            <h1 class="text-xl font-bold text-gray-900">低代码简历构建器</h1>
+            <h1 class="text-xl font-bold text-gray-900">AI Resume</h1>
           </div>
           <div class="flex gap-2">
             <button
@@ -29,16 +29,16 @@
       </div>
     </header>
 
-    <main class="max-w-[1920px] mx-auto py-4 px-2 sm:px-4 lg:px-6">
+    <main class="max-w-[1920px] mx-auto py-3 px-2 sm:px-4 lg:px-6">
       <Transition name="fade" mode="out-in">
         <ResumeEditor />
       </Transition>
     </main>
     
-    <footer class="bg-white border-t border-gray-200 py-2 mt-4">
+    <footer class="bg-white border-t border-gray-200 py-4">
       <div class="max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-8">
         <p class="text-center text-xs text-gray-500">
-          © {{ new Date().getFullYear() }} 低代码简历构建器 | 使用 Vue 3 + TypeScript 构建
+          © {{ new Date().getFullYear() }} 低代码简历构建器 | Made with ❤️
         </p>
       </div>
     </footer>
