@@ -1,5 +1,5 @@
 // 组件类型
-export type ComponentType = 'image' | 'list' | 'title' | 'divider' | 'skill-tag' | 'timeline' | 'contact' | 'section' | 'experience' | 'education';
+export type ComponentType = 'title' | 'divider';
 
 // 基础组件属性
 export interface BaseComponent {

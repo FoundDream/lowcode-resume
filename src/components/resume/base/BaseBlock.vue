@@ -11,7 +11,7 @@
     </div>
 
     <!-- 操作按钮 -->
-    <div class="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity flex gap-1">
+    <div class="absolute top-[-10px] right-[-10px] opacity-0 group-hover:opacity-100 transition-opacity flex gap-1">
       <button
         @click.stop="$emit('edit')"
         class="p-1.5 bg-white rounded-lg shadow-sm hover:bg-gray-50 text-gray-600 hover:text-gray-900"

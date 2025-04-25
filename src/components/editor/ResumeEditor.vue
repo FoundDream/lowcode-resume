@@ -29,7 +29,7 @@
       @dragover.prevent
       @drop="handleDrop($event)"
     >
-      <div class="resume-container mx-auto bg-white rounded-xl shadow-md p-6" :style="resumeStyle">
+      <div class="resume-container mx-auto bg-white rounded-xl shadow-md" :style="resumeStyle">
         <draggable
           v-model="resumeComponents"
           item-key="id"
@@ -136,58 +136,8 @@
               </div>
             </div>
             
-            <!-- 图片组件属性 -->
-            <div v-else-if="selectedComponent.type === 'image'" class="bg-white rounded-lg shadow-sm p-3 border border-gray-200">
-              <h3 class="text-sm font-medium text-gray-700 mb-2">图片设置</h3>
-              <div class="space-y-2">
-                <div>
-                  <label class="block text-xs text-gray-500 mb-1">图片URL</label>
-                  <input
-                    v-model="selectedComponent.content.src"
-                    type="text"
-                    class="form-input"
-                    placeholder="请输入图片URL"
-                  />
-                </div>
-                <div>
-                  <label class="block text-xs text-gray-500 mb-1">替代文本</label>
-                  <input
-                    v-model="selectedComponent.content.alt"
-                    type="text"
-                    class="form-input"
-                    placeholder="请输入替代文本"
-                  />
-                </div>
-              </div>
-            </div>
             
-            <!-- 列表组件属性 -->
-            <div v-else-if="selectedComponent.type === 'list'" class="bg-white rounded-lg shadow-sm p-3 border border-gray-200">
-              <h3 class="text-sm font-medium text-gray-700 mb-2">列表项</h3>
-              <div class="space-y-2">
-                <div v-for="(item, index) in selectedComponent.content" :key="index" class="flex gap-2">
-                  <input
-                    v-model="selectedComponent.content[index]"
-                    type="text"
-                    class="form-input"
-                    :placeholder="'列表项 ' + (index + 1)"
-                  />
-                  <button
-                    @click="removeListItem(index)"
-                    class="p-1.5 text-red-500 hover:bg-red-50 rounded-lg transition-colors"
-                  >
-                    <Icon icon="carbon:close" class="w-4 h-4" />
-                  </button>
-                </div>
-                <button
-                  @click="addListItem"
-                  class="w-full py-1.5 text-sm text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors"
-                >
-                  <Icon icon="carbon:add" class="w-4 h-4 inline-block mr-1" />
-                  添加列表项
-                </button>
-              </div>
-            </div>
+          
             
             <!-- 分割线组件属性 -->
             <div v-else-if="selectedComponent.type === 'divider'" class="bg-white rounded-lg shadow-sm p-3 border border-gray-200">
@@ -204,117 +154,7 @@
               </div>
             </div>
             
-            <!-- 技能标签组件属性 -->
-            <div v-else-if="selectedComponent.type === 'skill-tag'" class="bg-white rounded-lg shadow-sm p-3 border border-gray-200">
-              <h3 class="text-sm font-medium text-gray-700 mb-2">技能标签</h3>
-              <div class="space-y-2">
-                <div v-for="(tag, index) in selectedComponent.content.tags" :key="index" class="flex gap-2">
-                  <input
-                    v-model="selectedComponent.content.tags[index]"
-                    type="text"
-                    class="form-input"
-                    :placeholder="'标签 ' + (index + 1)"
-                  />
-                  <button
-                    @click="removeSkillTag(index)"
-                    class="p-1.5 text-red-500 hover:bg-red-50 rounded-lg transition-colors"
-                  >
-                    <Icon icon="carbon:close" class="w-4 h-4" />
-                  </button>
-                </div>
-                <button
-                  @click="addSkillTag"
-                  class="w-full py-1.5 text-sm text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors"
-                >
-                  <Icon icon="carbon:add" class="w-4 h-4 inline-block mr-1" />
-                  添加标签
-                </button>
-              </div>
-            </div>
-            
-            <!-- 时间线组件属性 -->
-            <div v-else-if="selectedComponent.type === 'timeline'" class="bg-white rounded-lg shadow-sm p-3 border border-gray-200">
-              <h3 class="text-sm font-medium text-gray-700 mb-2">时间线项目</h3>
-              <div class="space-y-4">
-                <div v-for="(item, index) in selectedComponent.content.items" :key="index" class="space-y-2">
-                  <div class="flex gap-2">
-                    <input
-                      v-model="selectedComponent.content.items[index].time"
-                      type="text"
-                      class="form-input"
-                      placeholder="时间"
-                    />
-                    <button
-                      @click="removeTimelineItem(index)"
-                      class="p-1.5 text-red-500 hover:bg-red-50 rounded-lg transition-colors"
-                    >
-                      <Icon icon="carbon:close" class="w-4 h-4" />
-                    </button>
-                  </div>
-                  <input
-                    v-model="selectedComponent.content.items[index].title"
-                    type="text"
-                    class="form-input"
-                    placeholder="标题"
-                  />
-                  <textarea
-                    v-model="selectedComponent.content.items[index].description"
-                    class="form-input"
-                    rows="2"
-                    placeholder="描述"
-                  ></textarea>
-                </div>
-                <button
-                  @click="addTimelineItem"
-                  class="w-full py-1.5 text-sm text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors"
-                >
-                  <Icon icon="carbon:add" class="w-4 h-4 inline-block mr-1" />
-                  添加时间线项目
-                </button>
-              </div>
-            </div>
-            
-            <!-- 联系方式组件属性 -->
-            <div v-else-if="selectedComponent.type === 'contact'" class="bg-white rounded-lg shadow-sm p-3 border border-gray-200">
-              <h3 class="text-sm font-medium text-gray-700 mb-2">联系方式</h3>
-              <div class="space-y-4">
-                <div v-for="(item, index) in selectedComponent.content.items" :key="index" class="space-y-2">
-                  <div class="flex gap-2">
-                    <input
-                      v-model="selectedComponent.content.items[index].icon"
-                      type="text"
-                      class="form-input"
-                      placeholder="图标"
-                    />
-                    <button
-                      @click="removeContactItem(index)"
-                      class="p-1.5 text-red-500 hover:bg-red-50 rounded-lg transition-colors"
-                    >
-                      <Icon icon="carbon:close" class="w-4 h-4" />
-                    </button>
-                  </div>
-                  <input
-                    v-model="selectedComponent.content.items[index].label"
-                    type="text"
-                    class="form-input"
-                    placeholder="标签"
-                  />
-                  <input
-                    v-model="selectedComponent.content.items[index].value"
-                    type="text"
-                    class="form-input"
-                    placeholder="内容"
-                  />
-                </div>
-                <button
-                  @click="addContactItem"
-                  class="w-full py-1.5 text-sm text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors"
-                >
-                  <Icon icon="carbon:add" class="w-4 h-4 inline-block mr-1" />
-                  添加联系方式
-                </button>
-              </div>
-            </div>
+           
             
             <!-- 删除组件按钮 -->
             <button
@@ -346,16 +186,8 @@ import type { BaseComponent, ComponentType } from '../../types/resume';
 import { v4 as uuidv4 } from 'uuid';
 import draggable from 'vuedraggable';
 import { Icon } from '@iconify/vue';
-import ListBlock from '../resume/blocks/ListBlock.vue';
-import ImageBlock from '../resume/blocks/ImageBlock.vue';
 import TitleBlock from '../resume/blocks/TitleBlock.vue';
 import DividerBlock from '../resume/blocks/DividerBlock.vue';
-import SkillTagBlock from '../resume/blocks/SkillTagBlock.vue';
-import TimelineBlock from '../resume/blocks/TimelineBlock.vue';
-import ContactBlock from '../resume/blocks/ContactBlock.vue';
-import ExperienceBlock from '../resume/blocks/ExperienceBlock.vue';
-import EducationBlock from '../resume/blocks/EducationBlock.vue';
-import SectionBlock from '../resume/blocks/SectionBlock.vue';
 
 const store = useResumeStore();
 const drag = ref(false);
@@ -364,40 +196,23 @@ const selectedComponent = ref<BaseComponent | null>(null);
 // 可用组件列表
 const availableComponents = [
   { type: 'title' as ComponentType, label: '标题', icon: 'carbon:text' },
-  { type: 'image' as ComponentType, label: '图片', icon: 'carbon:image' },
-  { type: 'list' as ComponentType, label: '列表', icon: 'carbon:list' },
   { type: 'divider' as ComponentType, label: '分割线', icon: 'carbon:line' },
-  { type: 'skill-tag' as ComponentType, label: '技能标签', icon: 'carbon:tag' },
-  { type: 'timeline' as ComponentType, label: '时间线', icon: 'carbon:time' },
-  { type: 'contact' as ComponentType, label: '联系方式', icon: 'carbon:phone' },
-  { type: 'section' as ComponentType, label: '区块', icon: 'carbon:section' },
-  { type: 'experience' as ComponentType, label: '工作经历', icon: 'carbon:briefcase' },
-  { type: 'education' as ComponentType, label: '教育背景', icon: 'carbon:education' },
 ];
 
-// 计算属性
+// Pinia与编辑器组件的双向绑定，可以再思考一下
 const resumeComponents = computed({
   get: () => store.resume.components,
   set: (value) => {
     store.resume.components = value;
   },
 });
-
 const resumeStyle = computed(() => store.resume.style);
 
 // 方法
 const getComponentByType = (type: ComponentType) => {
   const componentMap = {
     title: TitleBlock,
-    image: ImageBlock,
-    list: ListBlock,
     divider: DividerBlock,
-    'skill-tag': SkillTagBlock,
-    timeline: TimelineBlock,
-    contact: ContactBlock,
-    section: SectionBlock,
-    experience: ExperienceBlock,
-    education: EducationBlock,
   };
   return componentMap[type];
 };
@@ -405,15 +220,7 @@ const getComponentByType = (type: ComponentType) => {
 const getComponentIcon = (type: ComponentType) => {
   const iconMap = {
     title: 'carbon:text',
-    image: 'carbon:image',
-    list: 'carbon:list',
     divider: 'carbon:line',
-    'skill-tag': 'carbon:tag',
-    timeline: 'carbon:time',
-    contact: 'carbon:phone',
-    section: 'carbon:section',
-    experience: 'carbon:briefcase',
-    education: 'carbon:education',
   };
   return iconMap[type] || 'carbon:component';
 };
@@ -421,15 +228,7 @@ const getComponentIcon = (type: ComponentType) => {
 const getComponentLabel = (type: ComponentType) => {
   const labelMap = {
     title: '标题',
-    image: '图片',
-    list: '列表',
     divider: '分割线',
-    'skill-tag': '技能标签',
-    timeline: '时间线',
-    contact: '联系方式',
-    section: '区块',
-    experience: '工作经历',
-    education: '教育背景',
   };
   return labelMap[type] || '未知组件';
 };
@@ -464,31 +263,6 @@ const handleDrop = (event: DragEvent) => {
           }
         };
         break;
-      case 'image':
-        newComponent = {
-          id: uuidv4(),
-          type: 'image',
-          content: {
-            src: 'https://via.placeholder.com/300x200',
-            alt: '示例图片'
-          },
-          style: {
-            width: '100%',
-            padding: '10px',
-          }
-        };
-        break;
-      case 'list':
-        newComponent = {
-          id: uuidv4(),
-          type: 'list',
-          content: ['列表项 1', '列表项 2', '列表项 3'],
-          style: {
-            width: '100%',
-            padding: '10px',
-          }
-        };
-        break;
       case 'divider':
         newComponent = {
           id: uuidv4(),
@@ -501,122 +275,10 @@ const handleDrop = (event: DragEvent) => {
           },
           style: {
             width: '100%',
-            padding: '10px',
+            padding: '0px',
           }
         };
-        break;
-      case 'skill-tag':
-        newComponent = {
-          id: uuidv4(),
-          type: 'skill-tag',
-          content: {
-            tags: ['技能1', '技能2', '技能3'],
-            tagColor: '#e5e7eb',
-            textColor: '#374151'
-          },
-          style: {
-            width: '100%',
-            padding: '10px',
-          }
-        };
-        break;
-      case 'timeline':
-        newComponent = {
-          id: uuidv4(),
-          type: 'timeline',
-          content: {
-            items: [
-              {
-                time: '2020 - 至今',
-                title: '示例标题',
-                description: '示例描述'
-              }
-            ],
-            dotColor: '#6366f1',
-            lineColor: '#e5e7eb',
-            timeColor: '#6b7280',
-            titleColor: '#1f2937',
-            descriptionColor: '#4b5563'
-          },
-          style: {
-            width: '100%',
-            padding: '10px',
-          }
-        };
-        break;
-      case 'contact':
-        newComponent = {
-          id: uuidv4(),
-          type: 'contact',
-          content: {
-            items: [
-              {
-                icon: 'carbon:phone',
-                label: '电话',
-                value: '123-456-7890'
-              }
-            ],
-            iconBgColor: '#eef2ff',
-            iconColor: '#6366f1',
-            labelColor: '#6b7280',
-            valueColor: '#1f2937'
-          },
-          style: {
-            width: '100%',
-            padding: '10px',
-          }
-        };
-        break;
-      case 'section':
-        newComponent = {
-          id: uuidv4(),
-          type: 'section',
-          content: {
-            title: '新区块',
-            description: '这是新创建的区块'
-          },
-          style: {
-            width: '100%',
-            padding: '10px',
-          }
-        };
-        break;
-      case 'experience':
-        newComponent = {
-          id: uuidv4(),
-          type: 'experience',
-          content: {
-            title: '新工作经历',
-            company: '新公司',
-            location: '新地点',
-            startDate: '2020-01-01',
-            endDate: '2023-06-30',
-            description: '新描述'
-          },
-          style: {
-            width: '100%',
-            padding: '10px',
-          }
-        };
-        break;
-      case 'education':
-        newComponent = {
-          id: uuidv4(),
-          type: 'education',
-          content: {
-            school: '新学校',
-            degree: '新学位',
-            field: '新领域',
-            startDate: '2018-09-01',
-            endDate: '2022-06-30',
-            description: '新描述'
-          },
-          style: {
-            width: '100%',
-            padding: '10px',
-          }
-        };
-        break;
+        break
       default:
         return;
     }
@@ -636,63 +298,6 @@ const handleDelete = (component: BaseComponent) => {
   }
 };
 
-// 列表组件相关方法
-const addListItem = () => {
-  if (selectedComponent.value && selectedComponent.value.type === 'list') {
-    selectedComponent.value.content.push('新列表项');
-  }
-};
-
-const removeListItem = (index: number) => {
-  if (selectedComponent.value && selectedComponent.value.type === 'list') {
-    selectedComponent.value.content.splice(index, 1);
-  }
-};
-
-// 在 script setup 部分添加以下方法
-const addSkillTag = () => {
-  if (selectedComponent.value && selectedComponent.value.type === 'skill-tag') {
-    selectedComponent.value.content.tags.push('新标签');
-  }
-};
-
-const removeSkillTag = (index: number) => {
-  if (selectedComponent.value && selectedComponent.value.type === 'skill-tag') {
-    selectedComponent.value.content.tags.splice(index, 1);
-  }
-};
-
-const addTimelineItem = () => {
-  if (selectedComponent.value && selectedComponent.value.type === 'timeline') {
-    selectedComponent.value.content.items.push({
-      time: '新时间',
-      title: '新标题',
-      description: '新描述'
-    });
-  }
-};
-
-const removeTimelineItem = (index: number) => {
-  if (selectedComponent.value && selectedComponent.value.type === 'timeline') {
-    selectedComponent.value.content.items.splice(index, 1);
-  }
-};
-
-const addContactItem = () => {
-  if (selectedComponent.value && selectedComponent.value.type === 'contact') {
-    selectedComponent.value.content.items.push({
-      icon: 'carbon:phone',
-      label: '新标签',
-      value: '新内容'
-    });
-  }
-};
-
-const removeContactItem = (index: number) => {
-  if (selectedComponent.value && selectedComponent.value.type === 'contact') {
-    selectedComponent.value.content.items.splice(index, 1);
-  }
-};
 </script>
 
 <style scoped>

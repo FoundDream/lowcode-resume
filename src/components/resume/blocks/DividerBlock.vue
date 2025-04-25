@@ -34,7 +34,7 @@ interface Props {
   isSelected?: boolean;
 }
 
-const props = withDefaults(defineProps<Props>(), {
+withDefaults(defineProps<Props>(), {
   type: 'horizontal',
   style: 'solid',
   color: '#e5e7eb',

@@ -49,7 +49,7 @@ export const useResumeStore = defineStore('resume', {
       this.resume.style = {
         ...this.resume.style,
         ...style
-      };
+      } as ResumeData['style'];
     },
 
     // 清空简历

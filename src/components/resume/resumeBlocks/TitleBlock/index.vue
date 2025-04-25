@@ -9,21 +9,25 @@
     <h1 
       :class="[
         'title-content',
-        `text-${content.level}`,
-        { 'text-center': content.align === 'center' },
-        { 'text-right': content.align === 'right' }
+        titleClasses
       ]"
       :style="{ color: content.textColor }"
     >
       {{ content.text }}
     </h1>
+    <div 
+      v-if="divider.show"
+      class="divider-line"
+      :class="dividerClasses"
+      :style="dividerStyles"
+    ></div>
   </BaseBlock>
 </template>
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import BaseBlock from '../base/BaseBlock.vue';
-import type { ComponentStyle } from '../types';
+import BaseBlock from '../../base/BaseBlock.vue';
+import type { ComponentStyle } from '../../types';
 
 interface TitleContent {
   text: string;
@@ -32,19 +36,33 @@ interface TitleContent {
   textColor: string;
 }
 
+interface DividerOptions {
+  show: boolean;
+  type: 'solid' | 'dashed' | 'dotted';
+  color: string;
+  width: number;
+}
+
 interface Props {
   content: TitleContent;
+  divider: DividerOptions;
   componentStyle: ComponentStyle;
   isSelected?: boolean;
 }
 
 const props = withDefaults(defineProps<Props>(), {
   componentStyle: () => ({}),
-  isSelected: false
+  isSelected: false,
+  divider: () => ({
+    show: false,
+    type: 'solid',
+    color: '#000000',
+    width: 1
+  })
 });
 
-// 标题样式映射
-const textLevel = computed(() => {
+// 标题样式计算
+const titleClasses = computed(() => {
   const sizeMap = {
     1: 'text-3xl font-bold',
     2: 'text-2xl font-semibold',
@@ -53,8 +71,25 @@ const textLevel = computed(() => {
     5: 'text-base font-medium',
     6: 'text-sm font-medium'
   };
-  return sizeMap[props.content.level];
+
+  return [
+    sizeMap[props.content.level],
+    {
+      'text-center': props.content.align === 'center',
+      'text-right': props.content.align === 'right'
+    }
+  ];
 });
+
+// 分割线样式计算
+const dividerClasses = computed(() => [
+  `divider-${props.divider.type}`
+]);
+
+const dividerStyles = computed(() => ({
+  borderColor: props.divider.color,
+  borderWidth: `${props.divider.width}px`
+}));
 
 defineEmits<{
   (e: 'edit'): void;
@@ -69,6 +104,18 @@ defineEmits<{
   line-height: 1.4;
   font-weight: 700;
   font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
-  font-size: 16px
+}
+
+.divider-line {
+  margin: 8px 0;
+  border-top-style: solid;
+}
+
+.divider-dashed {
+  border-top-style: dashed;
+}
+
+.divider-dotted {
+  border-top-style: dotted;
 }
 </style> 
